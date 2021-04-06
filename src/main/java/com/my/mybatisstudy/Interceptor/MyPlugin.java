@@ -15,7 +15,7 @@ import java.util.Properties;
         method = "prepare",args = {Connection.class,Integer.class}),
         @Signature(method = "update",type = Executor.class,args = {MappedStatement.class,Object.class}),
         @Signature(method = "update",type = StatementHandler.class,args = {Statement.class})})
-@Component
+//@Component
 public class MyPlugin implements Interceptor {
 
     public MyPlugin() {

@@ -22,46 +22,52 @@
     <result column="g_lesson_time" jdbcType="INTEGER" property="gLessonTime" />
     <result column="lesson_money" jdbcType="DECIMAL" property="lessonMoney" />
     <result column="project_no" jdbcType="VARCHAR" property="projectNo" />
-    <result column="lesson_surplus" jdbcType="INTEGER" property="lessonSurplus" />
-    <result column="lesson_lock" jdbcType="INTEGER" property="lessonLock" />
-    <result column="math_score" jdbcType="DECIMAL" property="mathScore" />
-    <result column="physics_score" jdbcType="DECIMAL" property="physicsScore" />
-    <result column="chemistry_score" jdbcType="DECIMAL" property="chemistryScore" />
-    <result column="biology_score" jdbcType="DECIMAL" property="biologyScore" />
-    <result column="geography_score" jdbcType="DECIMAL" property="geographyScore" />
-    <result column="chinese_score" jdbcType="DECIMAL" property="chineseScore" />
-    <result column="english_score" jdbcType="DECIMAL" property="englishScore" />
-    <result column="history_score" jdbcType="DECIMAL" property="historyScore" />
-    <result column="politics_score" jdbcType="DECIMAL" property="politicsScore" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="status" jdbcType="SMALLINT" property="status" />
-    <result column="modify_user_id" jdbcType="INTEGER" property="modifyUserId" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
-    <result column="remake" jdbcType="VARCHAR" property="remake" />
+	  <result column="lesson_surplus" jdbcType="INTEGER" property="lessonSurplus"/>
+	  <result column="lesson_lock" jdbcType="INTEGER" property="lessonLock"/>
+	  <result column="math_score" jdbcType="DECIMAL" property="mathScore"/>
+	  <result column="physics_score" jdbcType="DECIMAL" property="physicsScore"/>
+	  <result column="chemistry_score" jdbcType="DECIMAL" property="chemistryScore"/>
+	  <result column="biology_score" jdbcType="DECIMAL" property="biologyScore"/>
+	  <result column="geography_score" jdbcType="DECIMAL" property="geographyScore"/>
+	  <result column="chinese_score" jdbcType="DECIMAL" property="chineseScore"/>
+	  <result column="english_score" jdbcType="DECIMAL" property="englishScore"/>
+	  <result column="history_score" jdbcType="DECIMAL" property="historyScore"/>
+	  <result column="politics_score" jdbcType="DECIMAL" property="politicsScore"/>
+	  <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+	  <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+	  <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+	  <result column="status" jdbcType="SMALLINT" property="status"/>
+	  <result column="modify_user_id" jdbcType="INTEGER" property="modifyUserId"/>
+	  <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime"/>
+	  <result column="modify_user" jdbcType="VARCHAR" property="modifyUser"/>
+	  <result column="remake" jdbcType="VARCHAR" property="remake"/>
   </resultMap>
-  <insert id="insert">
-<!--    <selectKey keyProperty="id" order="AFTER" resultType="integer">-->
-<!--      select LAST_INSERT_ID()-->
-<!--    </selectKey>-->
-    INSERT INTO `school`.`student` (
-	`name`,
-	`f_phone`,
-	`m_phone`,
-	`phone`,
-	`id_card`,
-	`classroom_teacher_id`,
-	`school_id`,
-	`class_id`,
-	`org_id`,
-	`grade_id`,
-	`lesson_time`,
-	`g_lesson_time`,
-	`lesson_money`,
-	`project_no`,
-	`lesson_surplus`,
+	<resultMap id="classMap" type="com.my.mybatisstudy.pojo.ClassInfo">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<collection property="students" column="id" ofType="com.my.mybatisstudy.pojo.Student"
+					select="selectByClassId" fetchType="lazy"/>
+	</resultMap>
+	<insert id="insert" >
+		<!--    <selectKey keyProperty="id" order="AFTER" resultType="integer">-->
+		<!--      select LAST_INSERT_ID()-->
+		<!--    </selectKey>-->
+		INSERT INTO `school`.`student` (
+		`name`,
+		`f_phone`,
+		`m_phone`,
+		`phone`,
+		`id_card`,
+		`classroom_teacher_id`,
+		`school_id`,
+		`class_id`,
+		`org_id`,
+		`grade_id`,
+		`lesson_time`,
+		`g_lesson_time`,
+		`lesson_money`,
+		`project_no`,
+		`lesson_surplus`,
 	`lesson_lock`,
 	`math_score`,
 	`physics_score`,
@@ -118,15 +124,31 @@ VALUES
 	''
 	);
   </insert>
-  <select id="selectByNameAndId" resultMap="BaseResultMap" statementType="PREPARED">
-    select * from student
-     <where>
-     <if test="id!=null">
-       id=#{id}
-     </if>
-     <if test="name!=null">
-       or name=#{name,jdbcType=VARCHAR}
-     </if>
-     </where>
-  </select>
+	<select id="selectByNameAndId" resultMap="BaseResultMap" statementType="PREPARED">
+		select * from student
+		<where>
+			<if test="id!=null">
+				id=#{id}
+			</if>
+			<if test="name!=null">
+				or name=#{name,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="findStudentByClassId" resultMap="classMap">
+	SELECT
+	ci.id,
+	ci.`name`
+	FROM
+	class_info ci
+	where ci.id=#{id}
+	</select>
+	<select id="selectByClassId" resultType="com.my.mybatisstudy.pojo.Student">
+	SELECT
+	s.id,
+	s.`name`
+	FROM
+	 student s
+	where s.class_id=#{id}
+	</select>
 </mapper>

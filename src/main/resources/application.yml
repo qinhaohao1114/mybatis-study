@@ -5,20 +5,32 @@ server:
       max: 1
     max-connections: 10
 
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.100.55.164:3333/school?autoReconnect=true&failOverReadOnly=false&maxReconnects=10&useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: qhh921114
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connectionTimeout: 30000
-      idleTimeout: 30000
-      maxLifetime: 60000
-      maximumPoolSize: 20
-      minimumIdle: 5
-      poolName: DF_CONN_POOL
-      connection-test-query: SELECT 1
+#datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://47.100.55.164:3333/school?autoReconnect=true&failOverReadOnly=false&maxReconnects=10&useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: qhh921114
+#    type: com.zaxxer.hikari.HikariDataSource
+#    hikari:
+#      connectionTimeout: 30000
+#      idleTimeout: 30000
+#      maxLifetime: 60000
+#      maximumPoolSize: 20
+#      minimumIdle: 5
+#      poolName: DF_CONN_POOL
+#      connection-test-query: SELECT 1
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://47.100.55.164:3333/school?autoReconnect=true&failOverReadOnly=false&maxReconnects=10&useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  username: root
+  password: qhh921114
+  type: com.zaxxer.hikari.HikariDataSource
+  connectionTimeout: 30000
+  idleTimeout: 30000
+  maxLifetime: 60000
+  maximumPoolSize: 20
+  minimumIdle: 5
+  poolName: DF_CONN_POOL
+  connection-test-query: SELECT 1
 mybatis:
   mapper-locations: mapper/*.xml

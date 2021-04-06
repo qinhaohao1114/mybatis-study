@@ -11,7 +11,7 @@ import java.util.Properties;
 
 @Intercepts({@Signature(method = "update",type = Executor.class,args = {MappedStatement.class,Object.class}),
 @Signature(method = "update",type = StatementHandler.class,args = {Statement.class})})
-@Component
+//@Component
 public class UpdatePlugin implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

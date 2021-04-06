@@ -1,7 +1,9 @@
 package com.my.mybatisstudy;
 
 import com.my.mybatisstudy.dao.StudentMapper;
+import com.my.mybatisstudy.pojo.ClassInfo;
 import com.my.mybatisstudy.pojo.Student;
+import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @SpringBootTest
@@ -39,9 +42,19 @@ class MybatisStudyApplicationTests {
 
     @Test
     public void test(){
+        Configuration configuration = sqlSessionFactory.getConfiguration();
+        Environment environment = configuration.getEnvironment();
+        DataSource dataSource = environment.getDataSource();
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
         int insert = sqlSession.insert("com.my.mybatisstudy.dao.StudentMapper.insert");
         System.out.println(insert);
 
+    }
+
+    @Test
+    public void testLazy(){
+        ClassInfo classInfo = studentMapper.findStudentByClassId(2);
+        List<Student> students = classInfo.getStudents();
+        System.out.println(students);
     }
 }
